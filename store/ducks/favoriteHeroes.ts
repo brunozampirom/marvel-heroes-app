@@ -2,10 +2,11 @@ import { Reducer, Action } from "redux";
 
 export const Types = {
   SET_HERO: "@hero/SET_HERO",
+  SET_ALL_HEROES: "@hero/SET_ALL_HEROES",
   REMOVE_HERO: "@hero/REMOVE_HERO",
 };
 
-type FavoriteHeroProps = {
+export type FavoriteHeroProps = {
   id: number;
   name: string;
   image: string;
@@ -23,7 +24,6 @@ export const FavoriteHeroesReducer: Reducer<FavoriteHeroesProps> = (
   state = INITIAL_STATE,
   action: Action | any
 ) => {
-  console.log(action);
   switch (action.type) {
     case Types.SET_HERO:
       return {
@@ -42,6 +42,11 @@ export const FavoriteHeroesReducer: Reducer<FavoriteHeroesProps> = (
         ...state,
         heroes: state.heroes.filter((item) => item.id !== action.id),
       };
+    case Types.SET_ALL_HEROES:
+      return {
+        ...state,
+        heroes: action.heroes,
+      };
     default:
       return state;
   }
@@ -58,5 +63,10 @@ export const HeroesActions = {
   deleteFavoriteHeroAction: ({ id }: { id: number }) => ({
     type: Types.REMOVE_HERO,
     id,
+  }),
+
+  setAllFavoriteHeroesAction: (heroes: FavoriteHeroProps[]) => ({
+    type: Types.SET_ALL_HEROES,
+    heroes,
   }),
 };

@@ -9,6 +9,10 @@ import { ButtonIcon } from "../components/ButtonIcon";
 import { FullScreenLoading } from "../components/FullScreenLoading";
 import { useAppDispatch, useAppSelector } from "../store";
 import { HeroesActions } from "../store/ducks/favoriteHeroes";
+import {
+  removeStoredFavoritesCharacters,
+  storeFavoritesCharacters,
+} from "../storage/AsyncStorageFunctions";
 
 export default function HeroDetailScreen({
   route,
@@ -29,8 +33,8 @@ export default function HeroDetailScreen({
       try {
         const hero = await getCharacterInfo(characterId);
         setCharacter(hero);
-      } finally {
-        console.log("return");
+      } catch (err) {
+        console.log(err);
       }
     };
     getHeroDetail();
@@ -58,20 +62,21 @@ export default function HeroDetailScreen({
       const setFavorite = !isFavorited;
       setFavorited(setFavorite);
       if (setFavorite) {
-        const image = `${character.thumbnail.path}/portrait_xlarge.${character.thumbnail.extension}`;
-        dispatch(
-          HeroesActions.addFavoriteHeroAction({
-            id: character.id,
-            name: character.name,
-            image,
-          })
-        );
+        const saveObj = {
+          id: character.id,
+          name: character.name,
+          image: `${character.thumbnail.path}/portrait_xlarge.${character.thumbnail.extension}`,
+        };
+
+        dispatch(HeroesActions.addFavoriteHeroAction(saveObj));
+        storeFavoritesCharacters(saveObj);
       } else {
         dispatch(
           HeroesActions.deleteFavoriteHeroAction({
             id: character.id,
           })
         );
+        removeStoredFavoritesCharacters({ id: character.id });
       }
     }
   };
@@ -83,7 +88,7 @@ export default function HeroDetailScreen({
       style={styles.container}
     >
       <FullScreenLoading loading={!character}>
-        <Text numberOfLines={1} style={styles.title}>
+        <Text numberOfLines={2} style={styles.title}>
           {character?.name}
         </Text>
         <Image
@@ -108,8 +113,8 @@ export default function HeroDetailScreen({
         <Text style={{ ...styles.description, fontWeight: "bold" }}>
           {"Description"}
         </Text>
-        <Text numberOfLines={3} style={styles.description}>
-          {character?.description}
+        <Text numberOfLines={4} style={styles.description}>
+          {character?.description !== "" ? character?.description : "N/A"}
         </Text>
       </FullScreenLoading>
     </ScrollView>
@@ -130,11 +135,11 @@ const styles = StyleSheet.create({
   },
   title: {
     marginVertical: 10,
-    fontSize: 28,
+    fontSize: 22,
+    textAlign: "center",
     fontWeight: "bold",
   },
   description: {
-    color: "#464646",
     marginVertical: 10,
     fontSize: 12,
     fontWeight: "normal",

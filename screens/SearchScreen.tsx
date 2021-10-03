@@ -2,25 +2,48 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
+import { Character, RootTabScreenProps } from "../types";
 import { height, width } from "../constants";
 import { CardCharacter } from "../components/CardCharacter";
 import { FullScreenLoading } from "../components/FullScreenLoading";
 import { useAppSelector } from "../store";
+import { SearchInput } from "../components/SearchInput";
+import { searchCharacterByName } from "../services/marvelService";
 
 const numColumns = 3;
 const numLines = 4;
 
-export default function FavoritesScreen({
+export default function SearchScreen({
   navigation,
-}: RootTabScreenProps<"Favorites">) {
-  const characters = useAppSelector(
-    (state) => state.FavoriteHeroesReducer.heroes
-  );
+}: RootTabScreenProps<"Search">) {
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [input, setInput] = useState<string>("");
+
+  const searchCharacter = async () => {
+    try {
+      setLoading(true);
+      const { heroes } = await searchCharacterByName(input);
+      setCharacters(heroes);
+    } catch {
+      setCharacters([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <FullScreenLoading loading={!characters}>
+      <SearchInput
+        buttonText={"Find"}
+        placeholder="Capitain America"
+        returnKeyType="done"
+        onChangeText={setInput}
+        value={input}
+        onPress={searchCharacter}
+        onSubmitEditing={searchCharacter}
+      />
+      <FullScreenLoading loading={loading}>
         {characters?.length ? (
           <FlatList
             numColumns={numColumns}
@@ -35,7 +58,7 @@ export default function FavoritesScreen({
                 }
                 id={item.id}
                 name={item.name}
-                image={item.image}
+                image={`${item.thumbnail?.path}/portrait_xlarge.${item.thumbnail?.extension}`}
                 imageProps={styles.image}
                 textProps={{ fontSize: 14 }}
                 viewProps={styles.card}
@@ -44,9 +67,7 @@ export default function FavoritesScreen({
           />
         ) : (
           <View style={styles.containerEmpty}>
-            <Text style={styles.title}>
-              {"You don't have any saved characters yet."}
-            </Text>
+            <Text style={styles.message}>{"No characters found."}</Text>
           </View>
         )}
       </FullScreenLoading>
@@ -64,6 +85,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
+    fontSize: 14,
+    marginLeft: 25,
+    marginTop: 10,
+  },
+  message: {
     fontSize: 18,
   },
   image: {

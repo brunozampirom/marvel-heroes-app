@@ -17,7 +17,6 @@ export default function HeroesScreen({
   const [characters, setCharacter] = useState<Character[]>([]);
   const [offset, setOffset] = useState<number>(0);
   const [isRefreshing, setRefreshing] = useState<boolean>(false);
-  const [isRefreshingBottom, setRefreshingBottom] = useState<boolean>(false);
 
   const getHeroes = async () => {
     const { heroes, offset: newOffset } = await getAllCharacters(offset);
@@ -62,10 +61,9 @@ export default function HeroesScreen({
               onPress={() =>
                 navigation.navigate("HeroDetails", { id: item.id })
               }
+              id={item.id}
               name={item.name}
-              image={{
-                uri: `${item.thumbnail.path}/portrait_xlarge.${item.thumbnail.extension}`,
-              }}
+              image={`${item.thumbnail.path}/portrait_xlarge.${item.thumbnail.extension}`}
               imageProps={styles.image}
               viewProps={styles.card}
             />

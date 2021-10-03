@@ -30,6 +30,7 @@ export type RootStackScreenProps<
 export type RootTabParamList = {
   Heroes: undefined;
   Favorites: undefined;
+  Search: undefined;
   HeroDetails: { id: number };
 };
 

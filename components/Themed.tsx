@@ -9,6 +9,7 @@ import {
   View as DefaultView,
   ScrollView as DefaultScrollView,
   ActivityIndicator as DefaultActivityIndicator,
+  TextInput as DefaultTextInput,
 } from "react-native";
 
 import Colors from "../constants/Colors";
@@ -38,6 +39,7 @@ export type ViewProps = ThemeProps & DefaultView["props"];
 export type ScrollViewProps = ThemeProps & DefaultScrollView["props"];
 export type ActivityIndicatorProps = ThemeProps &
   DefaultActivityIndicator["props"];
+export type TextInput = ThemeProps & DefaultTextInput["props"];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -77,4 +79,11 @@ export function ActivityIndicator(props: ActivityIndicatorProps) {
   return (
     <DefaultActivityIndicator style={[{ color }, style]} {...otherProps} />
   );
+}
+
+export function TextInput(props: ActivityIndicatorProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+
+  return <DefaultTextInput style={[{ color }, style]} {...otherProps} />;
 }

@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Pressable, Share } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -22,6 +22,8 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import SearchScreen from "../screens/SearchScreen";
+import { useAppSelector } from "../store";
 
 export default function Navigation({
   colorScheme,
@@ -64,6 +66,21 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function HomeTabs() {
   const colorScheme = useColorScheme();
+  const characters = useAppSelector(
+    (state) => state.FavoriteHeroesReducer.heroes
+  );
+
+  const shareFavoriteList = () => {
+    try {
+      Share.share({
+        message: `Hey, this is my top list of Marvel heroes:\n${characters
+          .map((character) => character.name)
+          .join(";\n")}`,
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <BottomTab.Navigator
@@ -75,25 +92,18 @@ function HomeTabs() {
       <BottomTab.Screen
         name="Heroes"
         component={HeroesScreen}
-        options={({ navigation }: RootTabScreenProps<"Heroes">) => ({
+        options={() => ({
           title: "Heroes",
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
         })}
+      />
+      <BottomTab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          title: "Search for a Hero",
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+        }}
       />
       <BottomTab.Screen
         name="Favorites"
@@ -101,6 +111,21 @@ function HomeTabs() {
         options={{
           title: "My Favorites",
           tabBarIcon: ({ color }) => <TabBarIcon name="star" color={color} />,
+          headerRight: () => (
+            <Pressable
+              onPress={shareFavoriteList}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <FontAwesome
+                name="share-alt"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
         }}
       />
     </BottomTab.Navigator>
