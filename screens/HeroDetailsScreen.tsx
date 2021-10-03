@@ -61,23 +61,26 @@ export default function HeroDetailScreen({
     if (character) {
       const setFavorite = !isFavorited;
       setFavorited(setFavorite);
-      if (setFavorite) {
-        const saveObj = {
-          id: character.id,
-          name: character.name,
-          image: `${character.thumbnail.path}/portrait_xlarge.${character.thumbnail.extension}`,
-        };
 
-        dispatch(HeroesActions.addFavoriteHeroAction(saveObj));
-        storeFavoritesCharacters(saveObj);
-      } else {
-        dispatch(
-          HeroesActions.deleteFavoriteHeroAction({
+      setTimeout(() => {
+        if (setFavorite) {
+          const saveObj = {
             id: character.id,
-          })
-        );
-        removeStoredFavoritesCharacters({ id: character.id });
-      }
+            name: character.name,
+            image: `${character.thumbnail.path}/portrait_xlarge.${character.thumbnail.extension}`,
+          };
+
+          dispatch(HeroesActions.addFavoriteHeroAction(saveObj));
+          storeFavoritesCharacters(saveObj);
+        } else {
+          dispatch(
+            HeroesActions.deleteFavoriteHeroAction({
+              id: character.id,
+            })
+          );
+          removeStoredFavoritesCharacters({ id: character.id });
+        }
+      }, 200);
     }
   };
 

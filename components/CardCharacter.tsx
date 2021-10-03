@@ -54,23 +54,25 @@ export function CardCharacter({
   const favoriteOnPress = () => {
     const setFavorite = !isFavorited;
     setFavorited(setFavorite);
-    if (setFavorite) {
-      const saveObj = {
-        id: id,
-        name: name,
-        image: image,
-      };
-
-      dispatch(HeroesActions.addFavoriteHeroAction(saveObj));
-      storeFavoritesCharacters(saveObj);
-    } else {
-      dispatch(
-        HeroesActions.deleteFavoriteHeroAction({
+    setTimeout(() => {
+      if (setFavorite) {
+        const saveObj = {
           id: id,
-        })
-      );
-      removeStoredFavoritesCharacters({ id: id });
-    }
+          name: name,
+          image: image,
+        };
+
+        dispatch(HeroesActions.addFavoriteHeroAction(saveObj));
+        storeFavoritesCharacters(saveObj);
+      } else {
+        dispatch(
+          HeroesActions.deleteFavoriteHeroAction({
+            id: id,
+          })
+        );
+        removeStoredFavoritesCharacters({ id: id });
+      }
+    }, 200);
   };
 
   return (
