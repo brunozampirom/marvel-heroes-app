@@ -36,7 +36,7 @@ export default function SearchScreen({
     <View style={styles.container}>
       <SearchInput
         buttonText={"Find"}
-        placeholder="Capitain America"
+        placeholder="Captain America"
         returnKeyType="done"
         onChangeText={setInput}
         value={input}

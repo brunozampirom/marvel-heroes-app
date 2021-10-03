@@ -42,6 +42,17 @@ export default function HeroesScreen({
     }
   };
 
+  const renderItem = ({ item }: { item: Character }) => (
+    <CardCharacter
+      onPress={() => navigation.navigate("HeroDetails", { id: item.id })}
+      id={item.id}
+      name={item.name}
+      image={`${item.thumbnail.path}/portrait_xlarge.${item.thumbnail.extension}`}
+      imageProps={styles.image}
+      viewProps={styles.card}
+    />
+  );
+
   return (
     <View style={styles.container}>
       <FullScreenLoading loading={!characters?.length}>
@@ -56,18 +67,7 @@ export default function HeroesScreen({
           onEndReached={loadMoreResults}
           onRefresh={refreshData}
           refreshing={isRefreshing}
-          renderItem={({ item }) => (
-            <CardCharacter
-              onPress={() =>
-                navigation.navigate("HeroDetails", { id: item.id })
-              }
-              id={item.id}
-              name={item.name}
-              image={`${item.thumbnail.path}/portrait_xlarge.${item.thumbnail.extension}`}
-              imageProps={styles.image}
-              viewProps={styles.card}
-            />
-          )}
+          renderItem={renderItem}
           ListFooterComponent={
             <ActivityIndicator
               size="large"

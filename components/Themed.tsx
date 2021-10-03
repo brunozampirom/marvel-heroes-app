@@ -77,7 +77,7 @@ export function ActivityIndicator(props: ActivityIndicatorProps) {
   );
 
   return (
-    <DefaultActivityIndicator style={[{ color }, style]} {...otherProps} />
+    <DefaultActivityIndicator color={color} style={[style]} {...otherProps} />
   );
 }
 

@@ -87,6 +87,8 @@ function HomeTabs() {
       initialRouteName="Heroes"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarHideOnKeyboard: true,
+        headerTitleAlign: "center",
       }}
     >
       <BottomTab.Screen
@@ -148,6 +150,7 @@ function BottomTabNavigator() {
         component={HeroDetailsScreen}
         options={({ navigation }: RootTabScreenProps<"HeroDetails">) => ({
           title: "Hero",
+          headerTitleAlign: "center",
           headerShown: true,
           tabBarVisible: false,
           headerLeft: () => (
