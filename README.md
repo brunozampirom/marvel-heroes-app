@@ -1,5 +1,9 @@
 # marvel-heroes-app
 Marvel character listing app, using the Marvel API (http://developer.marvel.com)
+<p align="left">
+  <img src="screenshot/app_fav_dark.png" width="150" title="dark mode">
+  <img src="screenshot/app_fav_light.png" width="150" title="dark mode">
+</p>
 
 ### Behaviour
 The user can:
