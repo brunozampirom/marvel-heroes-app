@@ -1,7 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
-  Image,
   StyleSheet,
   StyleProp,
   ViewStyle,
@@ -9,6 +8,7 @@ import {
   TextStyle,
   TouchableOpacity,
 } from "react-native";
+import { Image } from "react-native-expo-image-cache";
 
 import { Text, View } from "../components/Themed";
 import {
@@ -22,6 +22,7 @@ type CardCharacterProps = {
   id: number;
   name: string;
   image: string;
+  preview: string;
   viewProps?: StyleProp<ViewStyle>;
   imageProps?: StyleProp<ImageStyle>;
   textProps?: StyleProp<TextStyle>;
@@ -31,6 +32,7 @@ type CardCharacterProps = {
 export function CardCharacter({
   id,
   image,
+  preview,
   name,
   viewProps,
   imageProps,
@@ -79,7 +81,13 @@ export function CardCharacter({
     <View style={[styles.card, viewProps]}>
       <TouchableOpacity onPress={onPress}>
         {image && (
-          <Image style={[styles.image, imageProps]} source={{ uri: image }} />
+          <Image
+            style={[styles.image, imageProps]}
+            uri={image}
+            preview={{
+              uri: preview,
+            }}
+          />
         )}
       </TouchableOpacity>
       <TouchableOpacity

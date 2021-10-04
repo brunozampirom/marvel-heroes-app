@@ -48,6 +48,7 @@ export default function HeroesScreen({
       id={item.id}
       name={item.name}
       image={`${item.thumbnail.path}/portrait_xlarge.${item.thumbnail.extension}`}
+      preview={`${item.thumbnail.path}/portrait_small.${item.thumbnail.extension}`}
       imageProps={styles.image}
       viewProps={styles.card}
     />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Image, Share, StyleSheet } from "react-native";
+import { Share, StyleSheet } from "react-native";
 
+import { Image } from "react-native-expo-image-cache";
 import { Text, ScrollView, View } from "../components/Themed";
 import { Character, RootTabScreenProps } from "../types";
 import { height, width } from "../constants";
@@ -96,8 +97,9 @@ export default function HeroDetailScreen({
         </Text>
         <Image
           style={styles.image}
-          source={{
-            uri: `${character?.thumbnail?.path}/portrait_xlarge.${character?.thumbnail?.extension}`,
+          uri={`${character?.thumbnail?.path}/portrait_uncanny.${character?.thumbnail?.extension}`}
+          preview={{
+            uri: `${character?.thumbnail?.path}/portrait_small.${character?.thumbnail?.extension}`,
           }}
         />
         <View style={styles.containerIcons}>
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   description: {
-    marginVertical: 10,
+    marginVertical: 6,
     fontSize: 12,
     fontWeight: "normal",
   },
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 25,
-    height: height - 450,
+    height: height * 0.5,
     width: width - 100,
   },
 });

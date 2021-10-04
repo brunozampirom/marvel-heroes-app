@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import { Text, View } from "../components/Themed";
@@ -36,6 +36,7 @@ export default function FavoritesScreen({
                 id={item.id}
                 name={item.name}
                 image={item.image}
+                preview={item.image}
                 imageProps={styles.image}
                 textProps={{ fontSize: 14 }}
                 viewProps={styles.card}
