@@ -1,5 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   StyleSheet,
   StyleProp,
@@ -76,35 +76,38 @@ export function CardCharacter({
       }
     }, 200);
   };
-
-  return (
-    <View style={[styles.card, viewProps]}>
-      <TouchableOpacity onPress={onPress}>
-        {image && (
-          <Image
-            style={[styles.image, imageProps]}
-            uri={image}
-            preview={{
-              uri: preview,
-            }}
+  const cardCharacterComponent = useMemo(() => {
+    return (
+      <View style={[styles.card, viewProps]}>
+        <TouchableOpacity onPress={onPress}>
+          {image && (
+            <Image
+              style={[styles.image, imageProps]}
+              uri={image}
+              preview={{
+                uri: preview,
+              }}
+            />
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={favoriteOnPress}
+          style={styles.containerBottom}
+        >
+          <FontAwesome
+            name={isFavorited ? "star" : "star-o"}
+            size={12}
+            color={"#E11C22"}
           />
-        )}
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={favoriteOnPress}
-        style={styles.containerBottom}
-      >
-        <FontAwesome
-          name={isFavorited ? "star" : "star-o"}
-          size={12}
-          color={"#E11C22"}
-        />
-        <Text numberOfLines={1} style={[styles.title, textProps]}>
-          {name}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
+          <Text numberOfLines={1} style={[styles.title, textProps]}>
+            {name}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }, [image, preview, isFavorited, name]);
+
+  return cardCharacterComponent;
 }
 
 const styles = StyleSheet.create({

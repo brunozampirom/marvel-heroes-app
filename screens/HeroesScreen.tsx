@@ -65,6 +65,7 @@ export default function HeroesScreen({
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={250}
           onEndReachedThreshold={0.01}
+          removeClippedSubviews
           onEndReached={loadMoreResults}
           onRefresh={refreshData}
           refreshing={isRefreshing}
