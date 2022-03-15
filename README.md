@@ -10,9 +10,9 @@ The user can:
 * View a list of Marvel characters;
 * Save favorite characters;
 * Show favorite characters;
-* Search for some character text.
-* Share (text) character.
-* Share (text) list of favorite characters;
+* Search for some character.
+* Share the character.
+* Share the list of favorite characters;
 
 ### API key
 To run the application, you must first replace it in the file [config.ts](config.ts), with your public and private key, obtained from the Marvel developer website: https://developer.marvel.com/
